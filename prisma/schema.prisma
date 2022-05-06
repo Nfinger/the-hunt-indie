@@ -1,0 +1,44 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id String @id @default(cuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  hasOnboarded Boolean @default(false)
+}
+
+model Progress {
+  id    String @id @default(cuid())
+  title String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  currentStep Int @default(0)
+}
+
+model Location {
+  id   String @id @default(cuid())
+  name String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  order Int @default(0)
+
+  hasBeenGuessed Boolean @default(false)
+  hasBeenVisited Boolean @default(false)
+
+  clue       String  @unique
+  boldWord   String  @default("")
+  progressId String?
+}
